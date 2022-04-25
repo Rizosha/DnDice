@@ -7,7 +7,7 @@ using TMPro;
 public class DiceDisplay : MonoBehaviour
 {
 
-    public D6Manager diceNumber;
+    public DiceManager diceNumber;
 
     public TextMeshProUGUI roll;
     
@@ -17,7 +17,7 @@ public class DiceDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        diceNumber = GameObject.FindWithTag("D6").GetComponent<D6Manager>();
+        diceNumber = GameObject.FindWithTag("D6").GetComponent<DiceManager>();
     }
 
     // Update is called once per frame

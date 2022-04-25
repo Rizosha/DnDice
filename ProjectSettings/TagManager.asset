@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Shootable
   - D6
+  - D100
   layers:
   - Default
   - TransparentFX
