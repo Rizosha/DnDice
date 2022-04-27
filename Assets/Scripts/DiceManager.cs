@@ -9,11 +9,22 @@ public class DiceManager : MonoBehaviour
     public float[] sidesY;
     public float topValueY;
     public int diceOutput;
-    
-    
+    public bool allMod;
+    public int modifier;
+    public Modifier mod;
+    public ModifyAll modAll;
+
+    private void Start()
+    {
+        mod = GameObject.FindWithTag("Modifier").GetComponent<Modifier>();
+        modAll = GameObject.FindWithTag("Toggle1").GetComponent<ModifyAll>();
+    }
 
     private void Update()
     {
+        modifier = mod.modifier;
+        allMod = modAll.all;
+        
         // get position of dice sides
         for (int i = 0; i < sides.Length; i++)
         {
@@ -24,7 +35,15 @@ public class DiceManager : MonoBehaviour
             }
         }
         topValueY = sidesY.Max();
-        diceOutput = sidesY.ToList().IndexOf(topValueY) + 1;
+        if (allMod)
+        {
+            diceOutput = sidesY.ToList().IndexOf(topValueY) + 1 + modifier;
+        }
+        else
+        {
+            diceOutput = sidesY.ToList().IndexOf(topValueY) + 1;
+        }
+       
         if (gameObject.CompareTag("D100"))
         {
             diceOutput = diceOutput * 10;
