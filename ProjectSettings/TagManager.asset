@@ -9,6 +9,9 @@ TagManager:
   - D100
   - Modifier
   - Toggle1
+  - Toggle2
+  - DiceSpawner
+  - Display
   layers:
   - Default
   - TransparentFX

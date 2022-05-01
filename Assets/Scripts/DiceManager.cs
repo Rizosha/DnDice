@@ -14,13 +14,39 @@ public class DiceManager : MonoBehaviour
     public Modifier mod;
     public ModifyAll modAll;
 
+    public float diceVel;
+
+    public DiceDisplay display;
+    //change to true when thrown
+    public bool canDisplay = true;
+    
+
     private void Start()
     {
         mod = GameObject.FindWithTag("Modifier").GetComponent<Modifier>();
         modAll = GameObject.FindWithTag("Toggle1").GetComponent<ModifyAll>();
+        display = GameObject.FindWithTag("Display").GetComponent<DiceDisplay>();
     }
 
-    private void Update()
+    void Update()
+    {
+        diceVel = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
+
+        if (diceVel == 0 && canDisplay)
+        {
+            DiceUpdate();
+            display.howManyTru += 1;
+            canDisplay = false;
+            /*for (int i = 0; i < display.Length; i++)
+            {
+                display[i].SetActive(true);
+            }*/
+        }
+        
+
+    }
+
+    private void DiceUpdate()
     {
         modifier = mod.modifier;
         allMod = modAll.all;
@@ -48,5 +74,22 @@ public class DiceManager : MonoBehaviour
         {
             diceOutput = diceOutput * 10;
         }
-    } 
+
+        
+    }
+
+    void dicetrue()
+    {
+        
+        if (canDisplay)
+        {
+            display.howManyTru += 1;
+            canDisplay = false;
+        }
+    }
+
+    void DestroyDice()
+    {
+        Destroy(gameObject);
+    }
 }
