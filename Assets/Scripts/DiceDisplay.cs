@@ -36,14 +36,19 @@ public class DiceDisplay : MonoBehaviour
             {
                 allDiceOutput += customList._currentDice[i].GetComponent<DiceManager>().diceOutput;
             }
-            
+*            
         }*/
-        
-        
-        for (int i = 0; i < customList._currentDice.Count; i++)
+
+        if (canCalculate) 
         {
-           allDiceOutput += customList._currentDice[i].GetComponent<DiceManager>().diceOutput;
+           for (int i = 0; i < customList._currentDice.Count; i++)
+           {
+               allDiceOutput += customList._currentDice[i].GetComponent<DiceManager>().diceOutput;
+           }
+
+           canCalculate = false;
         }
+        
        //roll.text = diceNumber.diceOutput.ToString();
 
        roll.text = allDiceOutput.ToString();

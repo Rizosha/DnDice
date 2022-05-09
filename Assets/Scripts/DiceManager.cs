@@ -34,8 +34,9 @@ public class DiceManager : MonoBehaviour
 
         if (diceVel == 0 && canDisplay)
         {
+            
             DiceUpdate();
-            display.howManyTru += 1;
+            DisplayUpdate();
             canDisplay = false;
             /*for (int i = 0; i < display.Length; i++)
             {
@@ -43,7 +44,13 @@ public class DiceManager : MonoBehaviour
             }*/
         }
         
+        
 
+    }
+
+    private void DisplayUpdate()
+    {
+        display.allDiceOutput += diceOutput;
     }
 
     private void DiceUpdate()
@@ -78,15 +85,6 @@ public class DiceManager : MonoBehaviour
         
     }
 
-    void dicetrue()
-    {
-        
-        if (canDisplay)
-        {
-            display.howManyTru += 1;
-            canDisplay = false;
-        }
-    }
 
     void DestroyDice()
     {

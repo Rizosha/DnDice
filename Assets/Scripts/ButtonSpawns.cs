@@ -9,14 +9,29 @@ public class ButtonSpawns : MonoBehaviour
 {
    public GameObject spawnLocation;
    public GameObject d4Prefab, d6Prefab, d8Prefab, d10Prefab, d12Prefab, d00Prefab, d20Prefab;
-   public GameObject[] currentDiceList;
    public int indexHowMany;
+   public Rigidbody[] currentDiceList;
+   
    public int d4, d6, d8, d10, d12, d20, d100;
    [SerializeField] public List<GameObject> _currentDice = new List<GameObject>();
 
+   public GameObject saveMenu;
+   public GameObject saveButton;
+   
+   
    private void Update()
    {
-      
+       currentDiceList = new Rigidbody[_currentDice.Count];
+       for (int i = 0; i < _currentDice.Count; ++i)
+       {
+           // get GameObject at index `i`
+           GameObject dice = _currentDice[i];
+           // set rigidbody at index `i`
+           currentDiceList[i] = dice.GetComponent<Rigidbody>();
+       }
+
+       
+       
    }
 
    void SaveDice(string buttonName, int diceSides, int numberOfDiceTypes)
@@ -39,6 +54,9 @@ public class ButtonSpawns : MonoBehaviour
       //Array.Resize(ref currentDiceList,currentDiceList.Length + 1);
       GameObject d4Arr = Instantiate(d4Prefab, spawnLocation.transform.position, quaternion.identity);
       _currentDice.Add(d4Arr);
+      //currentDiceList[indexHowMany] = GetComponent
+
+
    }
 
    public void SpawnD6()
@@ -112,6 +130,19 @@ public class ButtonSpawns : MonoBehaviour
        //Array.Clear(_currentDice,indexHowMany,_currentDice.Count);
        //List<CurrentDice>.c
    }
-   
+
+   public void OpenSaveMenu()
+   {
+       saveButton.SetActive(false);
+       saveMenu.SetActive(true);
+   }
+
+   public void CloseSaveMenu()
+   {
+       saveMenu.SetActive(false);
+       saveButton.SetActive(true);
+   }
+
+ 
    
 }

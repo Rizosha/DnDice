@@ -25,15 +25,22 @@ public class ShootDice : MonoBehaviour
 
    public GameObject shooterPointMain;
    public Transform[] shooterPoints;
-   
-   
-   
-   
+
+   public ButtonSpawns diceList;
+   public Rigidbody[] currentDiceRb;
+   public int arraySize;
+
+
+   public void Start()
+   {
+       diceList = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
+   }
+
    void Update()
     {
         // sets the velocity variable
         dVeloc = diceRb.velocity.magnitude;
-
+        
        //if you input 1 touch
         if (Input.touchCount == 1)
         {
@@ -44,10 +51,15 @@ public class ShootDice : MonoBehaviour
                 d6.transform.position = wtouchEnd;
                 d6.SetActive(true);
               }*/
-
+            diceRb.transform.position = wtouchEnd;
+            
             shooterPointMain.transform.position = wtouchEnd;
             shooterPointMain.transform.LookAt(direction);
+            
+            //MoveDiceToFinger();
               
+            ShootDiceFromFinger();
+            
               RotateObject();
         }
         
@@ -56,9 +68,21 @@ public class ShootDice : MonoBehaviour
         {
             shootF = true;
             StartCoroutine(forceTime());
+            //ShootDiceFromFinger();
+            
         }
     }
-   
+
+   public void ShootDiceFromFinger()
+   {
+       for (int i = 0; i < diceList.currentDiceList.Length; i++)
+       {
+           Rigidbody cDice = diceList.currentDiceList[i].GetComponent<Rigidbody>();
+           cDice.transform.position = wtouchEnd;
+           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 5f), ForceMode.Impulse);
+       }
+   }
+
    public void FixedUpdate()
    {
        if (shootF)
@@ -97,10 +121,15 @@ public class ShootDice : MonoBehaviour
        //create a ping pong number to create a multiplication
        pingPong = Mathf.Lerp(2f,6f, Mathf.PingPong(Time.time / 4  ,1 ));
        pingPong2 = Mathf.Lerp(6f, -6f, Mathf.PingPong(Time.time / 4, 1));
-       diceRb.velocity = Vector3.zero;
-       diceRb.angularVelocity = Vector3.zero;
-       diceRb.AddTorque(transform.up * dRotSpd * pingPong);
-       diceRb.AddTorque(transform.right * dRotSpd * pingPong2);
+
+       for (int i = 0; i < diceList.currentDiceList.Length; i++)
+       {
+           diceList.currentDiceList[i].velocity = Vector3.zero;
+           diceList.currentDiceList[i].angularVelocity = Vector3.zero;
+           diceList.currentDiceList[i].AddTorque(transform.up * dRotSpd * pingPong);
+           diceList.currentDiceList[i].AddTorque(transform.right * dRotSpd * pingPong2);
+       }
+       
    }
    
     IEnumerator forceTime()
