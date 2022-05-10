@@ -2100,6 +2100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   diceNumber: {fileID: 0}
+  disp: {fileID: 0}
   roll: {fileID: 750001009}
   half: 0
 --- !u!114 &750001009
@@ -3905,6 +3906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1248502708}
   - component: {fileID: 1248502709}
+  - component: {fileID: 1248502710}
   m_Layer: 5
   m_Name: Toggle (1)
   m_TagString: Toggle2
@@ -3992,6 +3994,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 1
+--- !u!114 &1248502710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248502707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e453a962e79056d49b524941138bdf01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  end: 0
 --- !u!1 &1353672588
 GameObject:
   m_ObjectHideFlags: 0
@@ -4153,6 +4168,13 @@ MonoBehaviour:
   allDiceOutput: 0
   howManyTru: 0
   canCalculate: 0
+  diceNumbers: 
+  diceMoving: 
+  all: 0
+  calculateEnd: 0
+  mod: {fileID: 0}
+  modifier: 0
+  toggle: {fileID: 0}
 --- !u!114 &1392193282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6848,17 +6870,10 @@ MonoBehaviour:
   dVeloc: 0
   dRotSpd: 50
   cameraDist: 5.36
-  shooterPointMain: {fileID: 1102287596}
-  shooterPoints:
-  - {fileID: 531973488}
-  - {fileID: 1370646924}
-  - {fileID: 213516769}
-  - {fileID: 1773052233}
-  - {fileID: 357100843}
-  - {fileID: 1081984448}
   diceList: {fileID: 0}
-  currentDiceRb: []
-  arraySize: 0
+  diceBool: []
+  diceDisplay: {fileID: 0}
+  dbool: 0
 --- !u!114 &8434382095896531096
 MonoBehaviour:
   m_ObjectHideFlags: 0

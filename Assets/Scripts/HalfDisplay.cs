@@ -8,6 +8,8 @@ public class HalfDisplay : MonoBehaviour
 {
     public DiceManager diceNumber;
 
+    public DiceDisplay disp;
+
     public TextMeshProUGUI roll;
     public int half;
     
@@ -17,13 +19,14 @@ public class HalfDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        diceNumber = GameObject.FindWithTag("D6").GetComponent<DiceManager>();
+        disp = GameObject.FindWithTag("Display").GetComponent<DiceDisplay>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        half = diceNumber.diceOutput / 2;
+        
+        half = disp.allDiceOutput / 2;
         roll.text = half.ToString();
     }
 }

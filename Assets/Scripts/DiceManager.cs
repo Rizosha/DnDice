@@ -19,6 +19,8 @@ public class DiceManager : MonoBehaviour
     public DiceDisplay display;
     //change to true when thrown
     public bool canDisplay = true;
+
+    public bool hasStopped;
     
 
     private void Start()
@@ -30,19 +32,26 @@ public class DiceManager : MonoBehaviour
 
     void Update()
     {
+        // shows the velocity of the dice in editor
         diceVel = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
 
-        if (diceVel == 0 && canDisplay)
+        //DiceUpdate();
+        // if the dice velocity is 0, output the dice number
+        if (canDisplay && diceVel == 0)
         {
             
-            DiceUpdate();
-            DisplayUpdate();
-            canDisplay = false;
-            /*for (int i = 0; i < display.Length; i++)
-            {
-                display[i].SetActive(true);
-            }*/
+                DiceUpdate();
+                hasStopped = true;
+                canDisplay = false;
+            
+
         }
+        else
+        {
+            diceOutput = 0;
+            hasStopped = false;
+        }
+        
         
         
 
@@ -55,7 +64,9 @@ public class DiceManager : MonoBehaviour
 
     private void DiceUpdate()
     {
+        // the int modifier
         modifier = mod.modifier;
+        //toggle bool
         allMod = modAll.all;
         
         // get position of dice sides

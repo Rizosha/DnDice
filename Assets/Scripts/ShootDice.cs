@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.PlayerLoop;
+using Random = System.Random;
 
 
 public class ShootDice : MonoBehaviour
@@ -22,18 +23,19 @@ public class ShootDice : MonoBehaviour
    private Vector3 touchStart, touchEnd, direction,wtouchStart,wtouchEnd;
 
    private bool shootF = false;
-
-   public GameObject shooterPointMain;
-   public Transform[] shooterPoints;
-
    public ButtonSpawns diceList;
-   public Rigidbody[] currentDiceRb;
-   public int arraySize;
+
+   public DiceManager[] diceBool;
+
+   public DiceDisplay diceDisplay;
+   public bool dbool;
+  
 
 
    public void Start()
    {
        diceList = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
+       diceDisplay = GameObject.FindWithTag("Display").GetComponent<DiceDisplay>();
    }
 
    void Update()
@@ -41,54 +43,77 @@ public class ShootDice : MonoBehaviour
         // sets the velocity variable
         dVeloc = diceRb.velocity.magnitude;
         
+        //set size of array
+        Array.Resize(ref diceBool,diceList.currentDiceList.Length);
+        // grabs dice scripts for array
+        for (int i = 0; i < diceList.currentDiceList.Length; i++)
+        {
+            diceBool[i] = diceList._currentDice[i].GetComponent<DiceManager>();
+        }
+        
        //if you input 1 touch
         if (Input.touchCount == 1)
         {
+            diceDisplay.allDiceOutput = 0;
             GetInputDirections();
-            
-            /*GameObject d6 = DicePooling.SharedInstance.GetPooledObject(); 
-              if (d6 != null) {
-                d6.transform.position = wtouchEnd;
-                d6.SetActive(true);
-              }*/
-            diceRb.transform.position = wtouchEnd;
-            
-            shooterPointMain.transform.position = wtouchEnd;
-            shooterPointMain.transform.LookAt(direction);
-            
             //MoveDiceToFinger();
-              
-            ShootDiceFromFinger();
-            
-              RotateObject();
+           // ShootDiceFromFinger();
+            GatherDice();
+            RotateObject();
         }
         
         // if you release finger, fire object 
         if (sling.phase == TouchPhase.Ended)
         {
             shootF = true;
-            StartCoroutine(forceTime());
-            //ShootDiceFromFinger();
+            StartCoroutine(waitToSetCanDisplay());
+            dbool = true;
+            // set can display to true to enable dice calculation
+            /*foreach (var t in diceBool)
+            {
+                t.canDisplay = true;
+            }*/
             
+            //ShootDiceFromFinger();
+           // ShootEm();
+            
+        }
+        
+
+        // set dbool to true to enable dice calculation
+        if (dbool)
+        {
+            StartCoroutine(waitToSetCanDisplay());
+            /*foreach (var t in diceBool)
+            {
+                t.canDisplay = true;
+            }*/
+
+            dbool = false;
         }
     }
 
-   public void ShootDiceFromFinger()
+   public void GatherDice()
    {
+       // loops through current dice and sets the position of dice at finger and 
        for (int i = 0; i < diceList.currentDiceList.Length; i++)
        {
            Rigidbody cDice = diceList.currentDiceList[i].GetComponent<Rigidbody>();
            cDice.transform.position = wtouchEnd;
-           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 5f), ForceMode.Impulse);
+           
+           //this was its own method in fixed update at the end of touch, but it imitates what i want more here than what i created
+           // adds a force to current dice in list
+           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 3f), ForceMode.Impulse);
+          
        }
    }
 
    public void FixedUpdate()
    {
-       if (shootF)
+       /*if (shootF)
        {
-           diceRb.AddForce(transform.TransformDirection(direction * 5f), ForceMode.Impulse);
-       }
+           ShootEm();
+       }*/
    }
 
    void GetInputDirections()
@@ -124,18 +149,35 @@ public class ShootDice : MonoBehaviour
 
        for (int i = 0; i < diceList.currentDiceList.Length; i++)
        {
+           
+           // sets the dice velocity to 0 so the dice doesn't gain momentum when held
            diceList.currentDiceList[i].velocity = Vector3.zero;
            diceList.currentDiceList[i].angularVelocity = Vector3.zero;
+           
+           //add a torque based on ping pong. Ping pong allows a number to be negative and positive to imitate a left, right, up and down motion 
            diceList.currentDiceList[i].AddTorque(transform.up * dRotSpd * pingPong);
            diceList.currentDiceList[i].AddTorque(transform.right * dRotSpd * pingPong2);
        }
        
    }
-   
-    IEnumerator forceTime()
+
+   public void ShootEm()
+   {
+       for (int i = 0; i < diceList.currentDiceList.Length; i++)
+       {
+           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 5f), ForceMode.Impulse);
+       }
+
+   }
+
+
+    IEnumerator waitToSetCanDisplay()
     {
-        yield return 50;
-        shootF = false;
+        yield return 30;
+        foreach (var t in diceBool)
+        {
+            t.canDisplay = true;
+        }
     }
     
 }
