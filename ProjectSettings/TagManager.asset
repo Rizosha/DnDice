@@ -12,6 +12,7 @@ TagManager:
   - Toggle2
   - DiceSpawner
   - Display
+  - NewDiceText
   layers:
   - Default
   - TransparentFX
