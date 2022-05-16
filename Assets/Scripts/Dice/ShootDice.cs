@@ -39,7 +39,7 @@ public class ShootDice : MonoBehaviour
         }
         
         //If you input 1 touch
-        if (Input.touchCount == 1 || Input.GetMouseButtonDown(0))
+        if (Input.touchCount == 1)
         {
             diceDisplay.allDiceOutput = 0;
             GetInputDirections();
@@ -48,7 +48,7 @@ public class ShootDice : MonoBehaviour
         }
         
         //If you release finger, fire object 
-        if (touchSling.phase == TouchPhase.Ended ||Input.GetMouseButtonUp(0))
+        if (touchSling.phase == TouchPhase.Ended)
         {
             StartCoroutine(waitToSetCanDisplay());
             dbool = true;
@@ -83,7 +83,7 @@ public class ShootDice : MonoBehaviour
        touchSling = Input.GetTouch(0);
        
        //Create touch reference positions on touch events
-       if (touchSling.phase == TouchPhase.Began || Input.GetMouseButton(0))
+       if (touchSling.phase == TouchPhase.Began )
        {
            touchStart = touchSling.position;
            touchEnd = touchSling.position;
