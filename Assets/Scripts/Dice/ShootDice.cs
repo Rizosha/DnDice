@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShootDice : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class ShootDice : MonoBehaviour
    [Header("Script Grabbing",order = 3)]
    public DiceDisplay diceDisplay;
    public ButtonSpawns diceList;
+   
    
    public void Start()
    {
@@ -64,16 +66,19 @@ public class ShootDice : MonoBehaviour
 
    public void GatherDice()
    {
+       SetRandomInitialRotations();
        //Loops through current dice and sets the position of dice at finger and 
+       
        for (int i = 0; i < diceList.currentDiceList.Length; i++)
        {
            Rigidbody cDice = diceList.currentDiceList[i].GetComponent<Rigidbody>();
            cDice.transform.position = wtouchEnd;
            
-           //This was its own method in fixed update at the end of touch, but it imitates what i want more here than what i created
+           //This was its own method in fixed update at the end of touch, but it imitates what i want more here than
+           //what i created
            
            // Adds a force to current dice in list
-           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 3f), ForceMode.Impulse);
+           diceList.currentDiceList[i].AddForce(transform.TransformDirection(direction * 5f), ForceMode.Impulse);
        }
    }
 
@@ -102,12 +107,22 @@ public class ShootDice : MonoBehaviour
        direction = wtouchStart - wtouchEnd;
        
    }
+   public void SetRandomInitialRotations()
+   {
+       for (int i = 0; i < diceList.currentDiceList.Length; i++)
+       {
+           Transform dieTransform = diceList.currentDiceList[i].transform;
+           Vector3 randomRotation = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
+           dieTransform.rotation = Quaternion.Euler(randomRotation);
+       }
+   }
+
 
    public void RotateObject()
    {
        //Create a ping pong number to create a multiplication
-       pingPong = Mathf.Lerp(2f,6f, Mathf.PingPong(Time.time / 4  ,1 ));
-       pingPong2 = Mathf.Lerp(6f, -6f, Mathf.PingPong(Time.time / 4, 1));
+       /*pingPong = Mathf.Lerp(2f,6f, Mathf.PingPong(Time.time / 4  ,1 ));
+       pingPong2 = Mathf.Lerp(6f, -6f, Mathf.PingPong(Time.time / 4, 1));*/
 
        for (int i = 0; i < diceList.currentDiceList.Length; i++)
        {
@@ -115,9 +130,10 @@ public class ShootDice : MonoBehaviour
            diceList.currentDiceList[i].velocity = Vector3.zero;
            diceList.currentDiceList[i].angularVelocity = Vector3.zero;
            
-           //Add a torque based on ping pong. Ping pong allows a number to be negative and positive to imitate a left, right, up and down motion 
-           diceList.currentDiceList[i].AddTorque(transform.up * dRotSpd * pingPong);
-           diceList.currentDiceList[i].AddTorque(transform.right * dRotSpd * pingPong2);
+           //Add a torque based on ping pong. Ping pong allows a number to be negative and positive to imitate a left,
+           //right, up and down motion 
+           diceList.currentDiceList[i].AddTorque(transform.up * dRotSpd);
+           //diceList.currentDiceList[i].AddTorque(transform.right * dRotSpd * pingPong2);
        }
        
    }
