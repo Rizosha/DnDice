@@ -6,18 +6,20 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveMenu : MonoBehaviour
+public class SaveDice : MonoBehaviour
 {
     private SpellData spellData;
     private string path = "";
 
     public string spellName;
     public ButtonSpawns buttonSpawns;
+    SpawnSavedDice spawnSavedDice;
 
     void Start()
     {
         buttonSpawns = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
         SetPaths();
+        spawnSavedDice = GameObject.FindWithTag("BigGameController").GetComponent<SpawnSavedDice>();
     }
 
     public void CreateSpellData()
@@ -56,6 +58,11 @@ public class SaveMenu : MonoBehaviour
                 Debug.Log("Spell already exists in SpellData.json. Skipping addition.");
             }
         }
+
+        //update the button names and order
+        spawnSavedDice.ChangeButtonName();
+
+
     }
 
     public List<SpellData> LoadSpellData()
@@ -98,8 +105,32 @@ public class SaveMenu : MonoBehaviour
         }
         return false;
     }
+    public void DeleteSpellData(int index)
+    {
+        // Load existing spells
+        List<SpellData> spellList = LoadSpellData();
 
+        // Check if the index is within the range of the spell list
+        if (index >= 0 && index < spellList.Count)
+        {
+            // Remove the spell at the given index
+            spellList.RemoveAt(index);
 
+            // Save the updated spell list back to the file
+            SaveSpellData(spellList);
+
+            Debug.Log("Spell deleted at index: " + index);
+        }
+        else
+        {
+            Debug.Log("Invalid index. No spell deleted.");
+        }
+
+        //update the button names and order
+        spawnSavedDice.ChangeButtonName();
+    }
+
+    // Class to wrap the list of SpellData objects for JSON serialization. Can be made into a new script but kept here for convenience.
     [System.Serializable]
     public class SpellData
     {
@@ -124,6 +155,7 @@ public class SaveMenu : MonoBehaviour
     {
         public List<SpellData> spellDataArray;
     }
+
 }
 
 

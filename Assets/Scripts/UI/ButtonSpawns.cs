@@ -34,26 +34,7 @@ public class ButtonSpawns : MonoBehaviour
            currentDiceList[i] = dice.GetComponent<Rigidbody>();
        }
    }
-   // Save an int of the amount of dice you have in player prefs
-   // This isn't fully implemented but it is capable of actually saving information
-   void SaveDice(string buttonName, int diceSides, int numberOfDiceTypes)
-   { 
-       string key = buttonName + '_' + diceSides;
-       PlayerPrefs.SetInt(key,numberOfDiceTypes);
-   }
-   
-   //Calls the save on a button press
-   public void ActuallySave()
-   {
-       SaveDice(spellText, 5,5);
-   }
 
-   //Is capable of loading the int, but i have no use for it just yet
-   int LoadDice(string buttonName, int diceSides)
-   {
-      string key = buttonName + '_' + diceSides;
-      return PlayerPrefs.GetInt(key);
-   }
 
    /// <summary>
    /// The functions of spawning a dice through a button press. They essentially load a prefab and a + 1 value to track how many are currently spawned

@@ -13,6 +13,7 @@ TagManager:
   - DiceSpawner
   - Display
   - NewDiceText
+  - BigGameController
   layers:
   - Default
   - TransparentFX

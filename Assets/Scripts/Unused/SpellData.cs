@@ -28,7 +28,7 @@ public class SpellData
     }
     */
 
-
+    /*
     public SpellData(string spellName, int d4, int d6, int d8, int d10, int d12, int d20, int d100)
     {
         this.spellName = spellName;
@@ -40,4 +40,5 @@ public class SpellData
         this.d20 = d20;
         this.d100 = d100;
     }
+    */
 }
