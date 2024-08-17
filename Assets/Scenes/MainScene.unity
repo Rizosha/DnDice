@@ -3803,8 +3803,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 522215589}
   m_HandleRect: {fileID: 522215588}
   m_Direction: 2
-  m_Value: 1.0000004
-  m_Size: 0.7724019
+  m_Value: 0.9999997
+  m_Size: 0.77240187
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5445,7 +5445,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 622915303}
   m_HandleRect: {fileID: 622915302}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6222,9 +6222,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 390123013}
-        m_TargetAssemblyTypeName: ButtonSpawns, Assembly-CSharp
-        m_MethodName: ActuallySave
+      - m_Target: {fileID: 8434382095896531101}
+        m_TargetAssemblyTypeName: SaveMenu, Assembly-CSharp
+        m_MethodName: AddSpellData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6773,7 +6773,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1187, y: 504}
+  m_AnchoredPosition: {x: -1078, y: 97.014}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1654594476
@@ -8916,9 +8916,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2587075719249750391}
   - component: {fileID: 8434382095896531094}
-  - component: {fileID: 8434382095896531096}
   - component: {fileID: 8434382095896531098}
   - component: {fileID: 8434382095896531100}
+  - component: {fileID: 8434382095896531101}
   m_Layer: 0
   m_Name: BigGameController
   m_TagString: Untagged
@@ -8946,22 +8946,6 @@ MonoBehaviour:
   dbool: 0
   diceDisplay: {fileID: 0}
   diceList: {fileID: 0}
---- !u!114 &8434382095896531096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8434382095896531093}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 571ccf4005ab3fb449448b701d91211d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pooledObjects: []
-  objectToPool: {fileID: 4593578939913245497, guid: e49ad6821739f47408501d972a1931d4,
-    type: 3}
-  amountToPool: 4
 --- !u!114 &8434382095896531098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8992,6 +8976,20 @@ MonoBehaviour:
   depth: 100
   distanceQuery: 1
   use3DPhysics: 1
+--- !u!114 &8434382095896531101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8434382095896531093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e460b2a3c1cc4144867bcf5a9f1f4e6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellName: 
+  buttonSpawns: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

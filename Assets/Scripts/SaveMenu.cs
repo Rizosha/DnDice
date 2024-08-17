@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,92 +8,126 @@ using UnityEngine.SceneManagement;
 
 public class SaveMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
     private SpellData spellData;
-
     private string path = "";
-    private string persistentPath = "";
 
-    private int tutNpcIndex;
-    private int loreIndex;
-
-    public bool tutComplete = false;
-    public GameObject player;
-    GameObject tutSpawnLocation;
-   
-    //private GameObject playerV;
-    [SerializeField]
-    private GameObject tutLocationV;
-    private CharacterController characterController;
-    
     public string spellName;
-    public int d4;
-    public int d6;
-    public int d8;
-    public int d10;
-    public int d12;
-    public int d20;
-    public int d100;
-    public int modifier;
-    public bool all;
-
     public ButtonSpawns buttonSpawns;
-    
+
     void Start()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
         buttonSpawns = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
+        SetPaths();
     }
 
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe from the sceneLoaded event
-    }
-    
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        
-            LoadData();
-            
-        
-    }
-    
-    
     public void CreateSpellData()
     {
-        spellData = new SpellData(spellName, d4,d6,d8,d10,d12,d20,d100, modifier,all);
+        spellName = buttonSpawns.spellText;
+        spellData = new SpellData(spellName, buttonSpawns.d4, buttonSpawns.d6, buttonSpawns.d8, buttonSpawns.d10, buttonSpawns.d12, buttonSpawns.d20, buttonSpawns.d100);
     }
-    
+
     public void SetPaths()
     {
         path = Application.dataPath + Path.AltDirectorySeparatorChar + "SpellData.json";
-        persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "SpellData.json";
     }
-    
-    public void SaveData()
+
+    public void AddSpellData()
     {
-        string savePath = path;
-        string json = JsonUtility.ToJson(spellData);
-        Debug.Log(json);
+        CreateSpellData();
 
-        using StreamWriter writer = new StreamWriter(savePath);
-        writer.Write((json));
-    }
-    
-    public void LoadData()
-    {
-        if(File.Exists(Application.dataPath + Path.AltDirectorySeparatorChar + "SpellData.json")) {
-            using StreamReader reader = new StreamReader(path);
-            string json = reader.ReadToEnd();
+        if (!string.IsNullOrEmpty(spellName))
+        {
+            // Load existing spells
+            List<SpellData> spellList = LoadSpellData();
 
-            SpellData data = JsonUtility.FromJson<SpellData>(json);
-            Debug.Log("Loaded Tutorial Data: " + data);
+            // Check if spell already exists
+            if (!SpellExistsInData(spellList, spellName))
+            {
+                // Add the new spell to the list
+                spellList.Add(spellData);
 
-            /*tutComplete = data.tutComplete;
-            tutNpcIndex = data.tutNpcIndex;*/
+                // Save the updated spell list back to the file
+                SaveSpellData(spellList);
+
+                Debug.Log("New spell added.");
+            }
+            else
+            {
+                Debug.Log("Spell already exists in SpellData.json. Skipping addition.");
+            }
         }
     }
-    
-    
+
+    public List<SpellData> LoadSpellData()
+    {
+        List<SpellData> spellList = new List<SpellData>();
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            if (!string.IsNullOrEmpty(json))
+            {
+                // Deserialize the JSON into a list of SpellData objects
+                spellList = JsonUtility.FromJson<SpellDataListWrapper>(json).spellDataArray;
+            }
+        }
+
+        return spellList;
+    }
+
+    public void SaveSpellData(List<SpellData> spellList)
+    {
+        // Wrap the spell list in a wrapper object before saving
+        SpellDataListWrapper wrapper = new SpellDataListWrapper();
+        wrapper.spellDataArray = spellList;
+
+        // Convert the list back to JSON format and save it
+        string json = JsonUtility.ToJson(wrapper, true);
+        File.WriteAllText(path, json);
+    }
+
+    public bool SpellExistsInData(List<SpellData> spellList, string spellName)
+    {
+        foreach (SpellData data in spellList)
+        {
+            if (data.spellName == spellName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    [System.Serializable]
+    public class SpellData
+    {
+        public string spellName;
+        public int d4, d6, d8, d10, d12, d20, d100;
+
+        public SpellData(string spellName, int d4, int d6, int d8, int d10, int d12, int d20, int d100)
+        {
+            this.spellName = spellName;
+            this.d4 = d4;
+            this.d6 = d6;
+            this.d8 = d8;
+            this.d10 = d10;
+            this.d12 = d12;
+            this.d20 = d20;
+            this.d100 = d100;
+        }
+    }
+
+    [System.Serializable]
+    public class SpellDataListWrapper
+    {
+        public List<SpellData> spellDataArray;
+    }
 }
+
+
+
+
+
+
