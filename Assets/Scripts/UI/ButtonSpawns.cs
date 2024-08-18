@@ -20,9 +20,10 @@ public class ButtonSpawns : MonoBehaviour
    public GameObject saveMenu;
    public GameObject saveButton;
    public string spellText;
-   
-   
-   private void Update()
+    private SpawnSavedDice SpawnSavedDice;
+
+
+    private void Update()
    {
        // sets a list of rigid bodies so I can use them in my launcher
        currentDiceList = new Rigidbody[_currentDice.Count];
@@ -35,11 +36,16 @@ public class ButtonSpawns : MonoBehaviour
        }
    }
 
+    private void Start()
+    {
+        SpawnSavedDice = GameObject.FindWithTag("BigGameController").GetComponent<SpawnSavedDice>();
+    }
 
-   /// <summary>
-   /// The functions of spawning a dice through a button press. They essentially load a prefab and a + 1 value to track how many are currently spawned
-   /// </summary>
-   public void SpawnD4()
+
+    /// <summary>
+    /// The functions of spawning a dice through a button press. They essentially load a prefab and a + 1 value to track how many are currently spawned
+    /// </summary>
+    public void SpawnD4()
    { 
        d4 += 1;
       indexHowMany += 1;
@@ -117,13 +123,15 @@ public class ButtonSpawns : MonoBehaviour
    // open and closes the save menu
    public void OpenSaveMenu()
    {
-       saveButton.SetActive(false);
+        SpawnSavedDice.ChangeButtonName();
+        saveButton.SetActive(false);
        saveMenu.SetActive(true);
    }
 
    public void CloseSaveMenu()
    {
-       saveMenu.SetActive(false);
+        SpawnSavedDice.ChangeButtonName();
+        saveMenu.SetActive(false);
        saveButton.SetActive(true);
    }
    

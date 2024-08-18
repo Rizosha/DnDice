@@ -12,6 +12,10 @@ public class SpawnSavedDice : MonoBehaviour
 
     SaveDice saveDice;
 
+    private void Awake()
+    {
+    }
+
     private void Start()
     {
         // Initialize the saveDice reference
@@ -19,6 +23,7 @@ public class SpawnSavedDice : MonoBehaviour
         buttonSpawns = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
 
         ChangeButtonName();
+
     }
 
     public void ChangeButtonName()
@@ -62,6 +67,8 @@ public class SpawnSavedDice : MonoBehaviour
 
     public void SpawnSaveDice(int index)
     {
+        buttonSpawns.ClearDice();
+
         // Load existing spells
         List<SaveDice.SpellData> spellList = saveDice.LoadSpellData();
 
