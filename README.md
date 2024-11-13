@@ -1,7 +1,6 @@
 # DnDice
- 
- A submittable for a university project, but I intend to work on this further in the future
 
-This will be a dice rolling game made with unity, capable of calculating dice rolls based off a character sheet.
+This is a Dice rolling game made within Unity, aimed at players of Dungeons and Dragons. 
 
-Hopefully you will stick around for updates!
+Scripts that I have written for this game can be found at Assets > Scripts
+
