@@ -20,10 +20,9 @@ public class DiceDisplay : MonoBehaviour
     public bool[] diceMoving;
    
     [Header("Script Grabbing",order = 3)]
-    public Modifier mod;
-    public ModifyEnd toggle;
-    public ButtonSpawns customList;
-  
+    Modifier mod;
+    ModifyEnd toggle;
+    ButtonSpawns customList;
     void Start()
     {
         customList = GameObject.FindWithTag("DiceSpawner").GetComponent<ButtonSpawns>();
@@ -38,18 +37,29 @@ public class DiceDisplay : MonoBehaviour
 
         //toggle button
         calculateEnd = toggle.end;
+           
+
+            if (diceMoving != null)
+            {
+                // resize dice output array to meet custom list
+                Array.Resize( ref diceMoving, customList.currentDiceList.Length);
+                
+                for (int i = 0; i < diceMoving.Length; i++)
+                {
+                    diceMoving[i] = customList._currentDice[i].GetComponent<DiceManager>().hasStopped;
+                }
+                // check if all the dice in array have stopped moving 
+                all = diceMoving.All(c => c == true);
+                
+            }
+            
+            
+         
         
-        // resize dice output array to meet custom list
-        Array.Resize( ref diceMoving, customList.currentDiceList.Length);
-        for (int i = 0; i < diceMoving.Length; i++)
-        {
-            diceMoving[i] = customList._currentDice[i].GetComponent<DiceManager>().hasStopped;
-        }
-
-        // check if all the dice in array have stopped moving 
-        all = diceMoving.All(c => c == true);
-
-        if (all)
+        
+       
+        
+        if (all && diceNumbers != null)
         {
             // resize dice output array to meet custom list
             Array.Resize( ref diceNumbers, customList.currentDiceList.Length);
@@ -67,10 +77,11 @@ public class DiceDisplay : MonoBehaviour
             {
                 allDiceOutput = diceNumbers.Sum() + modifier;
             }
+            //output all dice into ui text
+            roll.text = allDiceOutput.ToString();
         }
-        //output all dice into ui text
-       roll.text = allDiceOutput.ToString();
-    }
 
- 
+
+     
+    }
 }

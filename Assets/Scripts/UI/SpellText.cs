@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class SpellText : MonoBehaviour
+public class whSpellText : MonoBehaviour
 {
    /// <summary>
    /// Settings to display the spells field

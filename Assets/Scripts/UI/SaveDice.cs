@@ -30,7 +30,9 @@ public class SaveDice : MonoBehaviour
 
     public void SetPaths()
     {
-        path = Application.dataPath + Path.AltDirectorySeparatorChar + "SpellData.json";
+        //path = Application.dataPath + Path.AltDirectorySeparatorChar + "SpellData.json";
+        path = Path.Combine(Application.persistentDataPath, "SpellData.json");
+
     }
 
     public void AddSpellData()

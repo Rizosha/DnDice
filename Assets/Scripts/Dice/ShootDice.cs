@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
 public class ShootDice : MonoBehaviour
@@ -17,7 +18,7 @@ public class ShootDice : MonoBehaviour
    [Header("Dice Boolean List ",order = 2)]
    public DiceManager[] diceBool;
    public bool dbool;
-   
+   bool isDragging;
    [Header("Script Grabbing",order = 3)]
    public DiceDisplay diceDisplay;
    public ButtonSpawns diceList;
@@ -29,17 +30,18 @@ public class ShootDice : MonoBehaviour
        diceDisplay = GameObject.FindWithTag("Display").GetComponent<DiceDisplay>();
    }
 
-   void Update()
+    void Update()
     {
+        /*
         //set size of array
-        Array.Resize(ref diceBool,diceList.currentDiceList.Length);
-        
+        Array.Resize(ref diceBool, diceList.currentDiceList.Length);
+
         //Grabs dice scripts for array
         for (int i = 0; i < diceList.currentDiceList.Length; i++)
         {
             diceBool[i] = diceList._currentDice[i].GetComponent<DiceManager>();
         }
-        
+
         //If you input 1 touch
         if (Input.touchCount == 1)
         {
@@ -48,22 +50,89 @@ public class ShootDice : MonoBehaviour
             GatherDice();
             RotateObject();
         }
-        
+
         //If you release finger, fire object 
         if (touchSling.phase == TouchPhase.Ended)
         {
             StartCoroutine(waitToSetCanDisplay());
             dbool = true;
         }
-        
+
         //Set dbool to true to enable dice calculation
         if (dbool)
         {
             StartCoroutine(waitToSetCanDisplay());
             dbool = false;
         }
-    }
 
+        */
+
+        
+        // set size of array
+        Array.Resize(ref diceBool, diceList.currentDiceList.Length);
+
+        // Grabs dice scripts for array
+        for (int i = 0; i < diceList.currentDiceList.Length; i++)
+        {
+            diceBool[i] = diceList._currentDice[i].GetComponent<DiceManager>();
+        }
+
+        // Check if the user is not touching a UI element --needs more works as only includes buttons
+        if (!EventSystem.current.IsPointerOverGameObject() && EventSystem.current.currentSelectedGameObject == null)
+        {
+       
+
+            // If you input 1 touch
+            if (Input.touchCount == 1 || Input.GetMouseButtonDown(0))
+            {
+                diceDisplay.allDiceOutput = 0;
+                GetInputDirections();
+                GatherDice();
+                RotateObject();
+            }
+
+            // If you release finger, fire object 
+            if (touchSling.phase == TouchPhase.Ended || Input.GetMouseButtonUp(0))
+            {
+                StartCoroutine(waitToSetCanDisplay());
+                dbool = true;
+            }
+
+            // Set dbool to true to enable dice calculation
+            if (dbool)
+            {
+                StartCoroutine(waitToSetCanDisplay());
+                dbool = false;
+            }
+        }
+        
+        // When mouse is first pressed down
+      
+        if (Input.GetMouseButtonDown(0))
+        {
+            pcTouchStart = Input.mousePosition;
+            isDragging = true;
+        }
+    
+        // While mouse is held down
+        if (isDragging && Input.GetMouseButton(0))
+        {
+            pcTouchEnd = Input.mousePosition;
+            // Your dragging logic here
+            direction = pcTouchEnd - pcTouchStart;
+            pcTouchStart = pcTouchEnd;
+      
+        }
+    
+        // When mouse is released
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+            // Final pcTouchEnd position and any release logic
+        }
+
+    }
+    
    public void GatherDice()
    {
        SetRandomInitialRotations();
@@ -88,7 +157,7 @@ public class ShootDice : MonoBehaviour
        touchSling = Input.GetTouch(0);
        
        //Create touch reference positions on touch events
-       if (touchSling.phase == TouchPhase.Began )
+       if (touchSling.phase == TouchPhase.Began)
        {
            touchStart = touchSling.position;
            touchEnd = touchSling.position;
@@ -97,6 +166,10 @@ public class ShootDice : MonoBehaviour
        {
            touchEnd = touchSling.position;
        }
+
+    
+       
+       
        
        //Converts touch points into world points
        wtouchStart = Camera.main.ScreenToWorldPoint(new Vector3(touchStart.x,touchStart.y,cameraDist));
